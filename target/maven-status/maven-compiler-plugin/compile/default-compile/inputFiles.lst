@@ -1,9 +1,0 @@
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/api_hooks/UserApiHooks.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/model/Post.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/UsersAndPostsApplication.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/model/Tag.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/model/Reaction.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/model/User.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/model/Comment.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/custom_services/CustomUserSubscriptionsService.java
-/home/dave01/IdeaProjects/apifi_demos_users_posts/src/main/java/dev/sanda/users_and_posts/StreamLambdaHandler.java

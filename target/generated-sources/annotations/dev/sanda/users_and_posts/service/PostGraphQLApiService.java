@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class PostGraphQLApiService {
-
   @Autowired
   @Getter
   private ApiLogic<Post> apiLogic;
@@ -42,7 +41,9 @@ public class PostGraphQLApiService {
   @Getter
   private DataManager<Post> dataManager;
 
-  @Autowired(required = false)
+  @Autowired(
+      required = false
+  )
   @Getter
   private ApiHooks<Post> apiHooks;
 
@@ -75,12 +76,7 @@ public class PostGraphQLApiService {
   @Batched
   @GraphQLQuery
   public List<List<Comment>> comments(@GraphQLContext List<Post> input) {
-    return apiLogic.getEntityCollection(
-      input,
-      "comments",
-      null,
-      commentsDataManager
-    );
+    return apiLogic.getEntityCollection(input, "comments", null, commentsDataManager);
   }
 
   @GraphQLMutation
@@ -89,82 +85,38 @@ public class PostGraphQLApiService {
   }
 
   @GraphQLMutation
-  public List<Reaction> removeReactionsFromPost(
-    Post owner,
-    List<Reaction> input
-  ) {
-    return apiLogic.removeFromElementCollection(
-      owner,
-      "reactions",
-      input,
-      null
-    );
+  public List<Reaction> removeReactionsFromPost(Post owner, List<Reaction> input) {
+    return apiLogic.removeFromElementCollection(owner, "reactions", input, null);
   }
 
   @GraphQLQuery
   public Page<Reaction> reactionsOfPost(Post owner, PageRequest input) {
-    return apiLogic.getPaginatedBatchInElementCollection(
-      owner,
-      input,
-      "reactions",
-      null
-    );
+    return apiLogic.getPaginatedBatchInElementCollection(owner, input, "reactions", null);
   }
 
   @GraphQLQuery
-  public Page<Reaction> freeTextSearchReactionsOfPost(
-    Post owner,
-    FreeTextSearchPageRequest input
-  ) {
-    return apiLogic.getFreeTextSearchPaginatedBatchInElementCollection(
-      owner,
-      input,
-      "reactions",
-      null
-    );
+  public Page<Reaction> freeTextSearchReactionsOfPost(Post owner, FreeTextSearchPageRequest input) {
+    return apiLogic.getFreeTextSearchPaginatedBatchInElementCollection(owner, input, "reactions", null);
   }
 
   @GraphQLMutation
-  public Map<Tag, Integer> addTagCountToPost(
-    Post owner,
-    Map<Tag, Integer> input
-  ) {
+  public Map<Tag, Integer> addTagCountToPost(Post owner, Map<Tag, Integer> input) {
     return apiLogic.addToMapElementCollection(owner, "tagCount", input, null);
   }
 
   @GraphQLMutation
   public Map<Tag, Integer> removeTagCountFromPost(Post owner, List<Tag> input) {
-    return apiLogic.removeFromMapElementCollection(
-      owner,
-      "tagCount",
-      input,
-      null
-    );
+    return apiLogic.removeFromMapElementCollection(owner, "tagCount", input, null);
   }
 
   @GraphQLQuery
-  public Page<Map.Entry<Tag, Integer>> tagCountOfPost(
-    Post owner,
-    PageRequest input
-  ) {
-    return apiLogic.getPaginatedBatchInMapElementCollection(
-      owner,
-      input,
-      "tagCount",
-      null
-    );
+  public Page<Map.Entry<Tag, Integer>> tagCountOfPost(Post owner, PageRequest input) {
+    return apiLogic.getPaginatedBatchInMapElementCollection(owner, input, "tagCount", null);
   }
 
   @GraphQLQuery
-  public Page<Map.Entry<Tag, Integer>> freeTextSearchTagCountOfPost(
-    Post owner,
-    FreeTextSearchPageRequest input
-  ) {
-    return apiLogic.getFreeTextSearchPaginatedBatchInMapElementCollection(
-      owner,
-      input,
-      "tagCount",
-      null
-    );
+  public Page<Map.Entry<Tag, Integer>> freeTextSearchTagCountOfPost(Post owner,
+      FreeTextSearchPageRequest input) {
+    return apiLogic.getFreeTextSearchPaginatedBatchInMapElementCollection(owner, input, "tagCount", null);
   }
 }

@@ -32,7 +32,6 @@ import reactor.core.publisher.FluxSink;
 
 @Service
 public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
-
   @Autowired
   private TestSubscriptionsHandler testSubscriptionsHandler;
 
@@ -52,7 +51,9 @@ public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
   @Getter
   private DataManager<User> dataManager;
 
-  @Autowired(required = false)
+  @Autowired(
+      required = false
+  )
   @Getter
   private ApiHooks<User> apiHooks;
 
@@ -70,7 +71,7 @@ public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
 
   @GraphQLQuery
   public Page<User> users(PageRequest input) {
-    if (input.getSortBy() == null) {
+    if(input.getSortBy() == null) {
       input.setSortBy("id");
     }
     return apiLogic.getPaginatedBatch(input);
@@ -86,12 +87,16 @@ public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
     return apiLogic.getTotalArchivedCount();
   }
 
-  @GraphQLQuery(name = "getUserById")
+  @GraphQLQuery(
+      name = "getUserById"
+  )
   public User getUserById(Long input) {
     return apiLogic.getById(input);
   }
 
-  @GraphQLQuery(name = "getUsersByIds")
+  @GraphQLQuery(
+      name = "getUsersByIds"
+  )
   public List<User> getUsersByIds(List<Long> input) {
     return apiLogic.getBatchByIds(input);
   }
@@ -152,7 +157,7 @@ public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
 
   @GraphQLQuery
   public Page<User> archivedUsers(PageRequest input) {
-    if (input.getSortBy() == null) {
+    if(input.getSortBy() == null) {
       input.setSortBy("id");
     }
     return apiLogic.getArchivedPaginatedBatch(input);
@@ -161,62 +166,38 @@ public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
   @GraphQLSubscription
   @RolesAllowed("ROLE_ADMIN")
   public Flux<List<User>> onUsersCreated(
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
     return apiLogic.onCreateSubscription(backPressureStrategy);
   }
 
   @GraphQLSubscription
   @RolesAllowed("ROLE_ADMIN")
-  public Flux<User> onUserUpdated(
-    List<User> toObserve,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
+  public Flux<User> onUserUpdated(List<User> toObserve,
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
     return apiLogic.onUpdateSubscription(toObserve, backPressureStrategy);
   }
 
   @GraphQLSubscription
   @RolesAllowed("ROLE_ADMIN")
   @PreAuthorize("#{hasRole('ROLE_SYS_ADMIN')}")
-  public Flux<User> onUserDeleted(
-    List<User> toObserve,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
+  public Flux<User> onUserDeleted(List<User> toObserve,
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
     return apiLogic.onDeleteSubscription(toObserve, backPressureStrategy);
   }
 
   @GraphQLSubscription
   @RolesAllowed("ROLE_ADMIN")
   @PreAuthorize("#{hasRole('ROLE_SYS_ADMIN')}")
-  public Flux<User> onUserArchived(
-    List<User> toObserve,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
+  public Flux<User> onUserArchived(List<User> toObserve,
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
     return apiLogic.onArchiveSubscription(toObserve, backPressureStrategy);
   }
 
   @GraphQLSubscription
   @RolesAllowed("ROLE_ADMIN")
   @PreAuthorize("#{hasRole('ROLE_SYS_ADMIN')}")
-  public Flux<User> onUserDeArchived(
-    List<User> toObserve,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
+  public Flux<User> onUserDeArchived(List<User> toObserve,
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
     return apiLogic.onDeArchiveSubscription(toObserve, backPressureStrategy);
   }
 
@@ -229,87 +210,39 @@ public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
 
   @GraphQLMutation
   public List<Post> associatePostsWithUser(User owner, List<Post> input) {
-    return apiLogic.associateWithEntityCollection(
-      owner,
-      "posts",
-      input,
-      postsDataManager,
-      null,
-      postsSubscriptionsLogicService
-    );
+    return apiLogic.associateWithEntityCollection(owner, "posts", input, postsDataManager, null, postsSubscriptionsLogicService);
   }
 
   @GraphQLMutation
   public List<Post> removePostsFromUser(User owner, List<Post> input) {
-    return apiLogic.removeFromEntityCollection(
-      owner,
-      "posts",
-      input,
-      postsDataManager,
-      null
-    );
+    return apiLogic.removeFromEntityCollection(owner, "posts", input, postsDataManager, null);
   }
 
   @GraphQLQuery
   public Page<Post> postsOfUser(User owner, PageRequest input) {
-    if (input.getSortBy() == null) {
+    if(input.getSortBy() == null) {
       input.setSortBy("id");
     }
-    return apiLogic.getPaginatedBatchInEntityCollection(
-      owner,
-      input,
-      "posts",
-      postsDataManager,
-      null
-    );
+    return apiLogic.getPaginatedBatchInEntityCollection(owner, input, "posts", postsDataManager, null);
   }
 
   @GraphQLQuery
-  public Page<Post> postsOfUserFreeTextSearch(
-    User owner,
-    FreeTextSearchPageRequest input
-  ) {
-    if (input.getSortBy() == null) {
+  public Page<Post> postsOfUserFreeTextSearch(User owner, FreeTextSearchPageRequest input) {
+    if(input.getSortBy() == null) {
       input.setSortBy("id");
     }
-    return apiLogic.paginatedFreeTextSearchInEntityCollection(
-      owner,
-      input,
-      "posts",
-      postsDataManager,
-      null
-    );
+    return apiLogic.paginatedFreeTextSearchInEntityCollection(owner, input, "posts", postsDataManager, null);
   }
 
   @GraphQLSubscription
-  public Flux<List<Post>> onAssociatePostsWithUser(
-    User owner,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
-    return apiLogic.onAssociateWithSubscription(
-      owner,
-      "posts",
-      backPressureStrategy,
-      postsDataManager
-    );
+  public Flux<List<Post>> onAssociatePostsWithUser(User owner,
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
+    return apiLogic.onAssociateWithSubscription(owner, "posts", backPressureStrategy, postsDataManager);
   }
 
   @GraphQLSubscription
-  public Flux<List<Post>> onRemovePostsFromUser(
-    User owner,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
-    return apiLogic.onRemoveFromSubscription(
-      owner,
-      "posts",
-      backPressureStrategy,
-      postsDataManager
-    );
+  public Flux<List<Post>> onRemovePostsFromUser(User owner,
+      @GraphQLArgument(name = "backPressureStrategy", defaultValue = "\"BUFFER\"") FluxSink.OverflowStrategy backPressureStrategy) {
+    return apiLogic.onRemoveFromSubscription(owner, "posts", backPressureStrategy, postsDataManager);
   }
 }

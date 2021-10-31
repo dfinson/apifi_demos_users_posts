@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class CommentGraphQLApiService {
-
   @Autowired
   @Getter
   private ApiLogic<Comment> apiLogic;
@@ -34,7 +33,9 @@ public class CommentGraphQLApiService {
   @Getter
   private DataManager<Comment> dataManager;
 
-  @Autowired(required = false)
+  @Autowired(
+      required = false
+  )
   @Getter
   private ApiHooks<Comment> apiHooks;
 
@@ -79,12 +80,7 @@ public class CommentGraphQLApiService {
   @Batched
   @GraphQLQuery
   public List<List<Comment>> replies(@GraphQLContext List<Comment> input) {
-    return apiLogic.getEntityCollection(
-      input,
-      "replies",
-      null,
-      repliesDataManager
-    );
+    return apiLogic.getEntityCollection(input, "replies", null, repliesDataManager);
   }
 
   @SuppressWarnings("deprecation")

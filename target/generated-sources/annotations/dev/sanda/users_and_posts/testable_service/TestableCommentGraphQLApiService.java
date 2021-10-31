@@ -21,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestableCommentGraphQLApiService
-  implements TestGraphQLService<Comment> {
-
+public class TestableCommentGraphQLApiService implements TestGraphQLService<Comment> {
   @Autowired
   private TestSubscriptionsHandler testSubscriptionsHandler;
 
@@ -43,7 +41,9 @@ public class TestableCommentGraphQLApiService
   @Getter
   private DataManager<Comment> dataManager;
 
-  @Autowired(required = false)
+  @Autowired(
+      required = false
+  )
   @Getter
   private ApiHooks<Comment> apiHooks;
 
@@ -88,12 +88,7 @@ public class TestableCommentGraphQLApiService
   @Batched
   @GraphQLQuery
   public List<List<Comment>> replies(@GraphQLContext List<Comment> input) {
-    return apiLogic.getEntityCollection(
-      input,
-      "replies",
-      null,
-      repliesDataManager
-    );
+    return apiLogic.getEntityCollection(input, "replies", null, repliesDataManager);
   }
 
   @SuppressWarnings("deprecation")

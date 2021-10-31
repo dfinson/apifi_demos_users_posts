@@ -21,12 +21,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GraphQLServiceImplementation implements GraphQLInstanceFactory {
+  @Autowired
+  private UserGraphQLApiService userGraphQLApiService;
 
   @Autowired
   private PostGraphQLApiService postGraphQLApiService;
-
-  @Autowired
-  private UserGraphQLApiService userGraphQLApiService;
 
   @Autowired
   private CommentGraphQLApiService commentGraphQLApiService;
@@ -46,28 +45,15 @@ public class GraphQLServiceImplementation implements GraphQLInstanceFactory {
   @SuppressWarnings("deprecation")
   private void init() {
     val schema = new GraphQLSchemaGenerator()
-      .withOperationsFromSingleton(
-        postGraphQLApiService,
-        PostGraphQLApiService.class
-      )
-      .withOperationsFromSingleton(
-        userGraphQLApiService,
-        UserGraphQLApiService.class
-      )
-      .withOperationsFromSingleton(
-        commentGraphQLApiService,
-        CommentGraphQLApiService.class
-      )
-      .withOperationsFromSingleton(
-        customUserSubscriptionsService,
-        CustomUserSubscriptionsService.class
-      )
-      .generate();
-    graphQLInstanceBuilder =
-      GraphQL
-        .newGraphQL(schema)
-        .queryExecutionStrategy(new BatchedExecutionStrategy())
-        .instrumentation(new MaxQueryDepthInstrumentation(maxQueryDepth));
+    		.withOperationsFromSingleton(userGraphQLApiService, UserGraphQLApiService.class)
+    		.withOperationsFromSingleton(postGraphQLApiService, PostGraphQLApiService.class)
+    		.withOperationsFromSingleton(commentGraphQLApiService, CommentGraphQLApiService.class)
+    		.withOperationsFromSingleton(customUserSubscriptionsService, CustomUserSubscriptionsService.class)
+    		.generate();
+    graphQLInstanceBuilder = GraphQL
+    	.newGraphQL(schema)
+    	.queryExecutionStrategy(new BatchedExecutionStrategy())
+    	.instrumentation(new MaxQueryDepthInstrumentation(maxQueryDepth));
     hasSubscriptions = schema.getSubscriptionType() != null;
   }
 

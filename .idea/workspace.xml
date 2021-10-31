@@ -5,58 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3af5f9fe-1440-4b55-a074-12ffe61a72db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__dev_sanda_apifi_1_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__dev_sanda_apifi_1_0_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Apifi clients/apifiClientJS.js" beforeDir="false" afterPath="$PROJECT_DIR$/Apifi clients/apifiClientJS.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Apifi clients/apifiClientTS.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Apifi clients/apifiClientTS.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/sanda/users_and_posts/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/sanda/users_and_posts/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/dev/sanda/users_and_posts/service/UserGraphQLApiServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/dev/sanda/users_and_posts/service/UserGraphQLApiServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/DataManagersConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/DataManagersConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/SandaClasspathConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/SandaClasspathConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/StreamLambdaHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/StreamLambdaHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/TypeResolverMapFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/TypeResolverMapFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/UsersAndPostsApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/UsersAndPostsApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/api_hooks/UserApiHooks.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/api_hooks/UserApiHooks.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/custom_services/CustomUserSubscriptionsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/custom_services/CustomUserSubscriptionsService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/graphql/GraphQLServiceImplementation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/graphql/GraphQLServiceImplementation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Comment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Comment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/CommentDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/CommentDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/DaoCollectorImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/DaoCollectorImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Post.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/PostDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/PostDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Reaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Reaction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Tag.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/Tag.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/UserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/model/UserDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/service/CommentGraphQLApiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/service/CommentGraphQLApiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/service/PostGraphQLApiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/service/PostGraphQLApiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/service/UserGraphQLApiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/service/UserGraphQLApiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/testable_service/TestableCommentGraphQLApiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/testable_service/TestableCommentGraphQLApiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/testable_service/TestablePostGraphQLApiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/testable_service/TestablePostGraphQLApiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/testable_service/TestableUserGraphQLApiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/sanda/users_and_posts/testable_service/TestableUserGraphQLApiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/DataManagersConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/DataManagersConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/SandaClasspathConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/SandaClasspathConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/TypeResolverMapFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/TypeResolverMapFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/graphql/GraphQLServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/graphql/GraphQLServiceImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/CommentDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/CommentDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/DaoCollectorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/DaoCollectorImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/PostDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/PostDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/model/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/service/CommentGraphQLApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/service/CommentGraphQLApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/service/PostGraphQLApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/service/PostGraphQLApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/service/UserGraphQLApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/service/UserGraphQLApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/testable_service/TestableCommentGraphQLApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/testable_service/TestableCommentGraphQLApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/testable_service/TestablePostGraphQLApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/testable_service/TestablePostGraphQLApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/testable_service/TestableUserGraphQLApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/dev/sanda/users_and_posts/testable_service/TestableUserGraphQLApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/dev/sanda/users_and_posts/service/Helpers.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/dev/sanda/users_and_posts/service/PostGraphQLApiServiceTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/dev/sanda/users_and_posts/service/PostGraphQLApiServiceTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/dev/sanda/users_and_posts/service/UserGraphQLApiServiceTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users_and_posts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/users_and_posts.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +42,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
@@ -282,7 +232,7 @@
       <workItem from="1622963009876" duration="158000" />
       <workItem from="1622989431862" duration="28784000" />
       <workItem from="1623145879661" duration="9503000" />
-      <workItem from="1635672240306" duration="1385000" />
+      <workItem from="1635672240306" duration="2180000" />
     </task>
     <servers />
   </component>
@@ -391,6 +341,9 @@
     <option featureType="dependencySupport" implementationName="java:com.sun.activation:jakarta.activation" />
     <option featureType="dependencySupport" implementationName="java:org.apache.logging.log4j:log4j-api" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -415,13 +368,7 @@
           <option name="timeStamp" value="103" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/dev/sanda/users_and_posts/service/PostGraphQLApiServiceTest.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="104" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>jar://$MAVEN_REPOSITORY$/dev/sanda/apifi/1.0.0/apifi-1.0.0.jar!/dev/sanda/apifi/service/api_logic/CollectionsCrudService.class</url>
-          <line>537</line>
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

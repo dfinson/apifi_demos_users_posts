@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TypeResolverMapFactory {
-
   @Bean
   public CollectionsTypeResolver collectionsTypesResolver() {
     HashMap<String, Class> typeResolverMap = new HashMap<String, Class>();
