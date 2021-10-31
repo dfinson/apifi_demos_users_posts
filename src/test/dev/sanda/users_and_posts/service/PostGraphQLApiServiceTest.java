@@ -4,7 +4,7 @@ import static dev.sanda.users_and_posts.service.Helpers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import dev.sanda.apifi.test_utils.TestableGraphQLService;
+import dev.sanda.apifi.test_utils.TestGraphQLService;
 import dev.sanda.datafi.dto.FreeTextSearchPageRequest;
 import dev.sanda.datafi.dto.Page;
 import dev.sanda.datafi.dto.PageRequest;
@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AllArgsConstructor(onConstructor_ = @Autowired)
 class PostGraphQLApiServiceTest {
 
-  private final TestableGraphQLService<Post> testApi;
+  private final TestGraphQLService<Post> testApi;
   private final DataManager<Post> postDataManager;
   private final DataManager<User> userDataManager;
   private final Helpers helpers;

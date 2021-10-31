@@ -4,7 +4,7 @@ import dev.sanda.apifi.service.api_hooks.ApiHooks;
 import dev.sanda.apifi.service.api_logic.ApiLogic;
 import dev.sanda.apifi.service.api_logic.SubscriptionsLogicService;
 import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.TestSubscriptionsHandler;
-import dev.sanda.apifi.test_utils.TestableGraphQLService;
+import dev.sanda.apifi.test_utils.TestGraphQLService;
 import dev.sanda.apifi.utils.ConfigValues;
 import dev.sanda.datafi.dto.FreeTextSearchPageRequest;
 import dev.sanda.datafi.dto.Page;
@@ -19,13 +19,8 @@ import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.GraphQLSubscription;
 import java.lang.Long;
-import java.lang.String;
 import java.lang.SuppressWarnings;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import lombok.Getter;
@@ -36,16 +31,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 @Service
-public class TestableUserGraphQLApiService
-  implements TestableGraphQLService<User> {
-
-  @Getter
-  private Map<String, Method> methodsMap = Arrays
-    .stream(this.getClass().getDeclaredMethods())
-    .collect(Collectors.toMap(Method::getName, method -> method));
+public class TestableUserGraphQLApiService implements TestGraphQLService<User> {
 
   @Autowired
-  @Getter
   private TestSubscriptionsHandler testSubscriptionsHandler;
 
   @Getter
@@ -55,6 +43,10 @@ public class TestableUserGraphQLApiService
   @Autowired
   @Getter
   private ApiLogic<User> apiLogic;
+
+  @Autowired
+  @Getter
+  private SubscriptionsLogicService<User> subscriptionsLogicService;
 
   @Autowired
   @Getter
@@ -72,7 +64,8 @@ public class TestableUserGraphQLApiService
 
   @PostConstruct
   private void postConstructInit() {
-    apiLogic.init(dataManager, apiHooks);
+    subscriptionsLogicService.setApiHooks(apiHooks);
+    apiLogic.init(dataManager, apiHooks, subscriptionsLogicService);
   }
 
   @GraphQLQuery
@@ -247,18 +240,6 @@ public class TestableUserGraphQLApiService
   }
 
   @GraphQLMutation
-  public List<Post> updatePostsOfUser(User owner, List<Post> input) {
-    return apiLogic.updateEntityCollection(
-      owner,
-      postsDataManager,
-      input,
-      null,
-      "posts",
-      postsSubscriptionsLogicService
-    );
-  }
-
-  @GraphQLMutation
   public List<Post> removePostsFromUser(User owner, List<Post> input) {
     return apiLogic.removeFromEntityCollection(
       owner,
@@ -311,22 +292,8 @@ public class TestableUserGraphQLApiService
     return apiLogic.onAssociateWithSubscription(
       owner,
       "posts",
-      backPressureStrategy
-    );
-  }
-
-  @GraphQLSubscription
-  public Flux<List<Post>> onUpdatePostsOfUser(
-    User owner,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
-    return apiLogic.onUpdateInSubscription(
-      owner,
-      "posts",
-      backPressureStrategy
+      backPressureStrategy,
+      postsDataManager
     );
   }
 
@@ -341,7 +308,8 @@ public class TestableUserGraphQLApiService
     return apiLogic.onRemoveFromSubscription(
       owner,
       "posts",
-      backPressureStrategy
+      backPressureStrategy,
+      postsDataManager
     );
   }
 }

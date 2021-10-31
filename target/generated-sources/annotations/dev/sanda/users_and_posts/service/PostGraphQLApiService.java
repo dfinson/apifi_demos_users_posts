@@ -36,6 +36,10 @@ public class PostGraphQLApiService {
 
   @Autowired
   @Getter
+  private SubscriptionsLogicService<Post> subscriptionsLogicService;
+
+  @Autowired
+  @Getter
   private DataManager<Post> dataManager;
 
   @Autowired(required = false)
@@ -56,7 +60,8 @@ public class PostGraphQLApiService {
 
   @PostConstruct
   private void postConstructInit() {
-    apiLogic.init(dataManager, apiHooks);
+    subscriptionsLogicService.setApiHooks(apiHooks);
+    apiLogic.init(dataManager, apiHooks, subscriptionsLogicService);
   }
 
   @SuppressWarnings("deprecation")

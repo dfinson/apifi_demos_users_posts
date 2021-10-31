@@ -4,7 +4,7 @@ import dev.sanda.apifi.service.api_hooks.ApiHooks;
 import dev.sanda.apifi.service.api_logic.ApiLogic;
 import dev.sanda.apifi.service.api_logic.SubscriptionsLogicService;
 import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.TestSubscriptionsHandler;
-import dev.sanda.apifi.test_utils.TestableGraphQLService;
+import dev.sanda.apifi.test_utils.TestGraphQLService;
 import dev.sanda.apifi.utils.ConfigValues;
 import dev.sanda.datafi.dto.FreeTextSearchPageRequest;
 import dev.sanda.datafi.dto.Page;
@@ -20,29 +20,18 @@ import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import java.lang.Integer;
-import java.lang.String;
 import java.lang.SuppressWarnings;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestablePostGraphQLApiService
-  implements TestableGraphQLService<Post> {
-
-  @Getter
-  private Map<String, Method> methodsMap = Arrays
-    .stream(this.getClass().getDeclaredMethods())
-    .collect(Collectors.toMap(Method::getName, method -> method));
+public class TestablePostGraphQLApiService implements TestGraphQLService<Post> {
 
   @Autowired
-  @Getter
   private TestSubscriptionsHandler testSubscriptionsHandler;
 
   @Getter
@@ -52,6 +41,10 @@ public class TestablePostGraphQLApiService
   @Autowired
   @Getter
   private ApiLogic<Post> apiLogic;
+
+  @Autowired
+  @Getter
+  private SubscriptionsLogicService<Post> subscriptionsLogicService;
 
   @Autowired
   @Getter
@@ -75,7 +68,8 @@ public class TestablePostGraphQLApiService
 
   @PostConstruct
   private void postConstructInit() {
-    apiLogic.init(dataManager, apiHooks);
+    subscriptionsLogicService.setApiHooks(apiHooks);
+    apiLogic.init(dataManager, apiHooks, subscriptionsLogicService);
   }
 
   @SuppressWarnings("deprecation")

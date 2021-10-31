@@ -30,179 +30,6 @@ export default{
 		includeCredentials = value;
 	},
 
-	async getUserById(input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `query getUserById($input: Long) { getUserById(input: $input)${selectionGraph} }`, 
-					variables: {
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	async createUser(input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `mutation createUser($input: UserInput) { createUser(input: $input)${selectionGraph} }`, 
-					variables: {
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	async associatePostsWithUser(owner, input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `mutation associatePostsWithUser($owner: UserInput, $input: [PostInput]) { associatePostsWithUser(owner: $owner, input: $input)${selectionGraph} }`, 
-					variables: {
-						"owner": owner, 
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	async updatePostsOfUser(owner, input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `mutation updatePostsOfUser($owner: UserInput, $input: [PostInput]) { updatePostsOfUser(owner: $owner, input: $input)${selectionGraph} }`, 
-					variables: {
-						"owner": owner, 
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	async removePostsFromUser(owner, input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `mutation removePostsFromUser($owner: UserInput, $input: [PostInput]) { removePostsFromUser(owner: $owner, input: $input)${selectionGraph} }`, 
-					variables: {
-						"owner": owner, 
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	async postsOfUser(owner, input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `query postsOfUser($owner: UserInput, $input: PageRequestInput) { postsOfUser(owner: $owner, input: $input)${selectionGraph} }`, 
-					variables: {
-						"owner": owner, 
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	async postsOfUserFreeTextSearch(owner, input, selectionGraph, customHeaders){
-			let requestHeaders = { "Content-Type": "application/json" }
-			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
-			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
-			const requestInit = {
-				method: "POST",
-				credentials: !!includeCredentials ? 'include' : 'omit',
-				headers: requestHeaders,
-				body: JSON.stringify({
-					query: `query postsOfUserFreeTextSearch($owner: UserInput, $input: FreeTextSearchPageRequestInput) { postsOfUserFreeTextSearch(owner: $owner, input: $input)${selectionGraph} }`, 
-					variables: {
-						"owner": owner, 
-						"input": input
-					}
-				})
-			};
-			return await (await fetch(apiUrl, requestInit)).json();
-	},
-
-	onAssociatePostsWithUser(input){
-			const queryParam = encodeURIComponent(
-				JSON.stringify({
-					query: `subscription onAssociatePostsWithUser($owner: User, $backPressureStrategy: OverflowStrategy) { onAssociatePostsWithUser(owner: $owner, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
-					variables: {
-						"owner": input.owner, 
-						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
-					}
-			}));
-			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
-			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
-			return new SubscriptionEventsEmitter(eventSourceUrl);
-	},
-
-	onUpdatePostsOfUser(input){
-			const queryParam = encodeURIComponent(
-				JSON.stringify({
-					query: `subscription onUpdatePostsOfUser($owner: User, $backPressureStrategy: OverflowStrategy) { onUpdatePostsOfUser(owner: $owner, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
-					variables: {
-						"owner": input.owner, 
-						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
-					}
-			}));
-			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
-			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
-			return new SubscriptionEventsEmitter(eventSourceUrl);
-	},
-
-	onRemovePostsFromUser(input){
-			const queryParam = encodeURIComponent(
-				JSON.stringify({
-					query: `subscription onRemovePostsFromUser($owner: User, $backPressureStrategy: OverflowStrategy) { onRemovePostsFromUser(owner: $owner, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
-					variables: {
-						"owner": input.owner, 
-						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
-					}
-			}));
-			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
-			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
-			return new SubscriptionEventsEmitter(eventSourceUrl);
-	},
-
 	async addReactionsToPost(owner, input, selectionGraph, customHeaders){
 			let requestHeaders = { "Content-Type": "application/json" }
 			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
@@ -353,6 +180,461 @@ export default{
 				})
 			};
 			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async users(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query users($input: PageRequestInput) { users(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async countTotalUsers(customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query countTotalUsers { countTotalUsers }`, 
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async countTotalArchivedUsers(customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query countTotalArchivedUsers { countTotalArchivedUsers }`, 
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async getUserById(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query getUserById($input: Long) { getUserById(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async getUsersByIds(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query getUsersByIds($input: [Long]) { getUsersByIds(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async createUser(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation createUser($input: UserInput) { createUser(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async createUsers(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation createUsers($input: [UserInput]) { createUsers(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async updateUser(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation updateUser($input: UserInput) { updateUser(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async updateUsers(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation updateUsers($input: [UserInput]) { updateUsers(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async deleteUser(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation deleteUser($input: UserInput) { deleteUser(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async deleteUsers(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation deleteUsers($input: [UserInput]) { deleteUsers(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async archiveUser(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation archiveUser($input: UserInput) { archiveUser(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async archiveUsers(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation archiveUsers($input: [UserInput]) { archiveUsers(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async deArchiveUser(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation deArchiveUser($input: UserInput) { deArchiveUser(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async deArchiveUsers(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation deArchiveUsers($input: [UserInput]) { deArchiveUsers(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async archivedUsers(input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query archivedUsers($input: PageRequestInput) { archivedUsers(input: $input)${selectionGraph} }`, 
+					variables: {
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	onUsersCreated(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onUsersCreated($backPressureStrategy: OverflowStrategy) { onUsersCreated(backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
+	},
+
+	onUserUpdated(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onUserUpdated($toObserve: [User], $backPressureStrategy: OverflowStrategy) { onUserUpdated(toObserve: $toObserve, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"toObserve": input.toObserve, 
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
+	},
+
+	onUserDeleted(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onUserDeleted($toObserve: [User], $backPressureStrategy: OverflowStrategy) { onUserDeleted(toObserve: $toObserve, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"toObserve": input.toObserve, 
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
+	},
+
+	onUserArchived(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onUserArchived($toObserve: [User], $backPressureStrategy: OverflowStrategy) { onUserArchived(toObserve: $toObserve, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"toObserve": input.toObserve, 
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
+	},
+
+	onUserDeArchived(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onUserDeArchived($toObserve: [User], $backPressureStrategy: OverflowStrategy) { onUserDeArchived(toObserve: $toObserve, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"toObserve": input.toObserve, 
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
+	},
+
+	async associatePostsWithUser(owner, input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation associatePostsWithUser($owner: UserInput, $input: [PostInput]) { associatePostsWithUser(owner: $owner, input: $input)${selectionGraph} }`, 
+					variables: {
+						"owner": owner, 
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async removePostsFromUser(owner, input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `mutation removePostsFromUser($owner: UserInput, $input: [PostInput]) { removePostsFromUser(owner: $owner, input: $input)${selectionGraph} }`, 
+					variables: {
+						"owner": owner, 
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async postsOfUser(owner, input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query postsOfUser($owner: UserInput, $input: PageRequestInput) { postsOfUser(owner: $owner, input: $input)${selectionGraph} }`, 
+					variables: {
+						"owner": owner, 
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	async postsOfUserFreeTextSearch(owner, input, selectionGraph, customHeaders){
+			let requestHeaders = { "Content-Type": "application/json" }
+			if(customHeaders) requestHeaders = Object.assign({}, requestHeaders, customHeaders);
+			if(bearerToken) requestHeaders["Authorization"] = bearerToken;
+			const requestInit = {
+				method: "POST",
+				credentials: !!includeCredentials ? 'include' : 'omit',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query: `query postsOfUserFreeTextSearch($owner: UserInput, $input: FreeTextSearchPageRequestInput) { postsOfUserFreeTextSearch(owner: $owner, input: $input)${selectionGraph} }`, 
+					variables: {
+						"owner": owner, 
+						"input": input
+					}
+				})
+			};
+			return await (await fetch(apiUrl, requestInit)).json();
+	},
+
+	onAssociatePostsWithUser(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onAssociatePostsWithUser($owner: User, $backPressureStrategy: OverflowStrategy) { onAssociatePostsWithUser(owner: $owner, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"owner": input.owner, 
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
+	},
+
+	onRemovePostsFromUser(input){
+			const queryParam = encodeURIComponent(
+				JSON.stringify({
+					query: `subscription onRemovePostsFromUser($owner: User, $backPressureStrategy: OverflowStrategy) { onRemovePostsFromUser(owner: $owner, backPressureStrategy: $backPressureStrategy)${input.selectionGraph} }`, 
+					variables: {
+						"owner": input.owner, 
+						"backPressureStrategy": input.backPressureStrategy || 'BUFFER'
+					}
+			}));
+			const timeoutParam = input.timeout ? `&timeout=${input.timeout}` : '';
+			const eventSourceUrl = `${apiSseUrl}?queryString=${queryParam}${timeoutParam}`;
+			return new SubscriptionEventsEmitter(eventSourceUrl);
 	},
 
 }

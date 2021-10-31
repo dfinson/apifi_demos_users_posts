@@ -2,7 +2,8 @@ package dev.sanda.users_and_posts.model;
 
 import static dev.sanda.apifi.code_generator.entity.CRUDEndpoints.*;
 import static dev.sanda.apifi.code_generator.entity.EntityCollectionEndpointType.*;
-import static dev.sanda.apifi.service.graphql_subcriptions.EntityCollectionSubscriptionEndpoints.*;
+import static dev.sanda.apifi.service.graphql_subcriptions.EntityCollectionSubscriptionEndpoints.ON_ASSOCIATE_WITH;
+import static dev.sanda.apifi.service.graphql_subcriptions.EntityCollectionSubscriptionEndpoints.ON_REMOVE_FROM;
 import static dev.sanda.apifi.service.graphql_subcriptions.SubscriptionEndpoints.*;
 import static javax.persistence.CascadeType.ALL;
 
@@ -78,12 +79,11 @@ public class User implements Archivable {
     endpoints = {
       ASSOCIATE_WITH,
       REMOVE_FROM,
-      UPDATE_IN,
       GET_PAGINATED__BATCH,
       PAGINATED__FREE_TEXT_SEARCH,
     },
     freeTextSearchFields = "content",
-    subscriptions = { ON_ASSOCIATE_WITH, ON_UPDATE_IN, ON_REMOVE_FROM }
+    subscriptions = { ON_ASSOCIATE_WITH, ON_REMOVE_FROM }
   )
   private Set<Post> posts;
 }

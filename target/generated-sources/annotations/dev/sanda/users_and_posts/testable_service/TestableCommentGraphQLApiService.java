@@ -4,7 +4,7 @@ import dev.sanda.apifi.service.api_hooks.ApiHooks;
 import dev.sanda.apifi.service.api_logic.ApiLogic;
 import dev.sanda.apifi.service.api_logic.SubscriptionsLogicService;
 import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.TestSubscriptionsHandler;
-import dev.sanda.apifi.test_utils.TestableGraphQLService;
+import dev.sanda.apifi.test_utils.TestGraphQLService;
 import dev.sanda.apifi.utils.ConfigValues;
 import dev.sanda.datafi.service.DataManager;
 import dev.sanda.users_and_posts.model.Comment;
@@ -13,13 +13,8 @@ import dev.sanda.users_and_posts.model.User;
 import graphql.execution.batched.Batched;
 import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLQuery;
-import java.lang.String;
 import java.lang.SuppressWarnings;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +22,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TestableCommentGraphQLApiService
-  implements TestableGraphQLService<Comment> {
-
-  @Getter
-  private Map<String, Method> methodsMap = Arrays
-    .stream(this.getClass().getDeclaredMethods())
-    .collect(Collectors.toMap(Method::getName, method -> method));
+  implements TestGraphQLService<Comment> {
 
   @Autowired
-  @Getter
   private TestSubscriptionsHandler testSubscriptionsHandler;
 
   @Getter
@@ -45,6 +34,10 @@ public class TestableCommentGraphQLApiService
   @Autowired
   @Getter
   private ApiLogic<Comment> apiLogic;
+
+  @Autowired
+  @Getter
+  private SubscriptionsLogicService<Comment> subscriptionsLogicService;
 
   @Autowired
   @Getter
@@ -80,7 +73,8 @@ public class TestableCommentGraphQLApiService
 
   @PostConstruct
   private void postConstructInit() {
-    apiLogic.init(dataManager, apiHooks);
+    subscriptionsLogicService.setApiHooks(apiHooks);
+    apiLogic.init(dataManager, apiHooks, subscriptionsLogicService);
   }
 
   @SuppressWarnings("deprecation")

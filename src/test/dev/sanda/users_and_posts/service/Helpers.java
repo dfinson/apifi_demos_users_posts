@@ -3,8 +3,8 @@ package dev.sanda.users_and_posts.service;
 import com.github.javafaker.Faker;
 import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharSequenceNodeFactory;
 import com.googlecode.concurrenttrees.solver.LCSubstringSolver;
-import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.TestSubscriber;
-import dev.sanda.apifi.test_utils.TestableGraphQLService;
+import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.test_subscriber_methods.TestSubscriberWhenMethod;
+import dev.sanda.apifi.test_utils.TestGraphQLService;
 import dev.sanda.datafi.service.DataManager;
 import dev.sanda.users_and_posts.model.Comment;
 import dev.sanda.users_and_posts.model.Post;
@@ -167,7 +167,7 @@ public class Helpers {
 
   // transaction
   public <T, R> R invokeMethodInTransaction(
-    TestableGraphQLService<T> testApi,
+    TestGraphQLService<T> testApi,
     String methodName,
     Object... args
   ) {
@@ -175,8 +175,8 @@ public class Helpers {
   }
 
   @SuppressWarnings("rawtypes")
-  public TestSubscriber invokeSubscriptionMethodInTransaction(
-    TestableGraphQLService testApi,
+  public TestSubscriberWhenMethod invokeSubscriptionMethodInTransaction(
+    TestGraphQLService testApi,
     String methodName,
     Class targetType,
     Object... args

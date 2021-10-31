@@ -28,6 +28,10 @@ public class CommentGraphQLApiService {
 
   @Autowired
   @Getter
+  private SubscriptionsLogicService<Comment> subscriptionsLogicService;
+
+  @Autowired
+  @Getter
   private DataManager<Comment> dataManager;
 
   @Autowired(required = false)
@@ -60,7 +64,8 @@ public class CommentGraphQLApiService {
 
   @PostConstruct
   private void postConstructInit() {
-    apiLogic.init(dataManager, apiHooks);
+    subscriptionsLogicService.setApiHooks(apiHooks);
+    apiLogic.init(dataManager, apiHooks, subscriptionsLogicService);
   }
 
   @SuppressWarnings("deprecation")

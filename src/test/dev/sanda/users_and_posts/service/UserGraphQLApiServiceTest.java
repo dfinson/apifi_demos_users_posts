@@ -1,12 +1,8 @@
 package dev.sanda.users_and_posts.service;
 
-import static dev.sanda.users_and_posts.service.Helpers.DEFAULT_NUM_USERS;
-import static java.lang.Math.floor;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.github.javafaker.Faker;
-import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.TestSubscriber;
-import dev.sanda.apifi.test_utils.TestableGraphQLService;
+import dev.sanda.apifi.service.graphql_subcriptions.testing_utils.test_subscriber_methods.TestSubscriberWhenMethod;
+import dev.sanda.apifi.test_utils.TestGraphQLService;
 import dev.sanda.datafi.dto.FreeTextSearchPageRequest;
 import dev.sanda.datafi.dto.Page;
 import dev.sanda.datafi.dto.PageRequest;
@@ -14,10 +10,6 @@ import dev.sanda.datafi.persistence.IdFactory;
 import dev.sanda.datafi.service.DataManager;
 import dev.sanda.users_and_posts.model.Post;
 import dev.sanda.users_and_posts.model.User;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -32,13 +24,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import reactor.core.publisher.FluxSink;
 
+import javax.transaction.Transactional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import static dev.sanda.users_and_posts.service.Helpers.DEFAULT_NUM_USERS;
+import static java.lang.Math.floor;
+import static org.junit.jupiter.api.Assertions.*;
+
 @Transactional
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @AllArgsConstructor(onConstructor_ = @Autowired)
 class UserGraphQLApiServiceTest {
 
-  private final TestableGraphQLService<User> testApi;
+  private final TestGraphQLService<User> testApi;
   private final DataManager<User> userDataManager;
   private final Helpers helpers;
 
@@ -373,26 +374,6 @@ class UserGraphQLApiServiceTest {
   }
 
   @Test
-  void updatePostsOfUser() {
-    User user = helpers.generateMockUser(true);
-    Set<Post> posts = helpers.generatePosts(user, 5, true);
-    String updatedContent = new Faker().lordOfTheRings().character();
-    for (Post post : posts) post.setContent(updatedContent);
-    Set<Post> updatedPosts = new HashSet<>(
-      testApi.invokeEndpoint("updatePostsOfUser", user, new ArrayList<>(posts))
-    );
-    for (Post post : updatedPosts) assertEquals(
-      updatedContent,
-      post.getContent()
-    );
-    user = userDataManager.findById(user.getId()).get();
-    for (Post post : user.getPosts()) assertEquals(
-      updatedContent,
-      post.getContent()
-    );
-  }
-
-  @Test
   void removePostsFromUser() {
     User user = helpers.generateMockUser(true);
     Set<Post> posts = helpers.generatePosts(user, 10, true);
@@ -454,14 +435,15 @@ class UserGraphQLApiServiceTest {
     propagation = Propagation.NEVER
   )
   void onUsersCreated() {
-    val subscriber = testApi.invokeSubscriptionEndpoint(
-      "onUsersCreated",
-      User.class,
-      FluxSink.OverflowStrategy.BUFFER
-    );
-    List<User> users = helpers.generateMockUsers(2, false);
-    users = testApi.invokeEndpoint("createUsers", users);
-    subscriber.assertNextEquals(users);
+    AtomicReference<List<User>> usersRef = new AtomicReference<>();
+    testApi
+      .invokeSubscriptionEndpoint(
+        "onUsersCreated",
+        User.class,
+        FluxSink.OverflowStrategy.BUFFER
+      )
+      .when(() -> usersRef.set(helpers.generateMockUsers(2, false)))
+      .expect(usersRef.get());
   }
 
   @Test
@@ -475,8 +457,12 @@ class UserGraphQLApiServiceTest {
     String originalName = toUpdate.getName();
     String reversedName = new StringBuilder(originalName).reverse().toString();
     toUpdate.setName(reversedName);
-    User updatedUser = testApi.invokeEndpoint("updateUser", toUpdate);
-    subscriber.assertNextEquals(updatedUser);
+    AtomicReference<User> updatedUserRef = new AtomicReference<>();
+    subscriber
+      .when(
+        () -> updatedUserRef.set(testApi.invokeEndpoint("updateUser", toUpdate))
+      )
+      .expect(updatedUserRef.get());
   }
 
   @Test
@@ -487,11 +473,18 @@ class UserGraphQLApiServiceTest {
   void onUserDeleted() {
     List<User> users = helpers.generateMockUsers(DEFAULT_NUM_USERS, true);
     val subscriber = generateTestSubscriber("onUserDeleted", User.class, users);
-    User toDelete = testApi.invokeEndpoint(
-      "deleteUser",
-      users.stream().findAny().orElseThrow(RuntimeException::new)
-    );
-    subscriber.assertNextEquals(toDelete);
+    AtomicReference<User> userToDeleteRef = new AtomicReference<>();
+    subscriber
+      .when(
+        () ->
+          userToDeleteRef.set(
+            testApi.invokeEndpoint(
+              "deleteUser",
+              users.stream().findAny().orElseThrow(RuntimeException::new)
+            )
+          )
+      )
+      .expect(userToDeleteRef.get());
   }
 
   @Test
@@ -506,11 +499,18 @@ class UserGraphQLApiServiceTest {
       User.class,
       users
     );
-    User toArchive = testApi.invokeEndpoint(
-      "archiveUser",
-      users.stream().findAny().orElseThrow(RuntimeException::new)
-    );
-    subscriber.assertNextEquals(toArchive);
+    AtomicReference<User> userToArchiveRef = new AtomicReference<>();
+    subscriber
+      .when(
+        () ->
+          userToArchiveRef.set(
+            testApi.invokeEndpoint(
+              "archiveUser",
+              users.stream().findAny().orElseThrow(RuntimeException::new)
+            )
+          )
+      )
+      .expect(userToArchiveRef.get());
   }
 
   @Test
@@ -528,8 +528,13 @@ class UserGraphQLApiServiceTest {
     User subject = users.stream().findAny().orElseThrow(RuntimeException::new);
     subject.setIsArchived(true);
     userDataManager.flush();
-    subject = testApi.invokeEndpoint("deArchiveUser", subject);
-    subscriber.assertNextEquals(subject);
+    AtomicReference<User> subjectUserRef = new AtomicReference<>();
+    subscriber
+      .when(
+        () ->
+          subjectUserRef.set(testApi.invokeEndpoint("deArchiveUser", subject))
+      )
+      .expect(subjectUserRef.get());
   }
 
   @Test
@@ -544,62 +549,22 @@ class UserGraphQLApiServiceTest {
       Post.class,
       user
     );
-    AtomicReference<List<Post>> toAssociate = associatePostsWithUser(
-      user,
-      Collections.singletonList(
-        Optional
-          .of(helpers.generatePost(false))
-          .orElseThrow(RuntimeException::new)
+    AtomicReference<List<Post>> toAssociateRef = new AtomicReference<>();
+    subscriber
+      .when(
+        () ->
+          toAssociateRef.set(
+            associatePostsWithUser(
+              user,
+              Collections.singletonList(
+                Optional
+                  .of(helpers.generatePost(false))
+                  .orElseThrow(RuntimeException::new)
+              )
+            )
+          )
       )
-    );
-    subscriber.assertNextEquals(toAssociate.get());
-  }
-
-  @Test
-  @org.springframework.transaction.annotation.Transactional(
-    propagation = Propagation.NEVER
-  )
-  void onUpdatePostsOfUser() {
-    AtomicReference<User> userReference = new AtomicReference<>(
-      helpers.generateMockUser(true)
-    );
-    val subscriber = generateTestSubscriber(
-      "onUpdatePostsOfUser",
-      Post.class,
-      userReference.get()
-    );
-    AtomicReference<List<Post>> updatedPostsReference = new AtomicReference<>();
-    helpers.runInTransaction(
-      () -> {
-        userReference.set(
-          userDataManager
-            .findById(userReference.get().getId())
-            .orElseThrow(RuntimeException::new)
-        );
-        final List<Post> postsOfUser = testApi.invokeEndpoint(
-          "associatePostsWithUser",
-          userReference.get(),
-          new ArrayList<>(helpers.generatePosts(10, false))
-        );
-        final Post toUpdate = postsOfUser
-          .stream()
-          .findAny()
-          .orElseThrow(RuntimeException::new);
-        toUpdate.setContent(
-          new StringBuilder(toUpdate.getContent()).reverse().toString()
-        );
-        final List<Post> updatedPosts = testApi.invokeEndpoint(
-          "updatePostsOfUser",
-          userReference.get(),
-          Collections.singletonList(toUpdate)
-        );
-        updatedPostsReference.set(updatedPosts);
-        try {
-          Thread.sleep(2500);
-        } catch (InterruptedException ignored) {}
-      }
-    );
-    subscriber.assertNextEquals(updatedPostsReference.get());
+      .expect(toAssociateRef.get());
   }
 
   @Test
@@ -616,38 +581,42 @@ class UserGraphQLApiServiceTest {
       userReference.get()
     );
     AtomicReference<List<Post>> removedPostsReference = new AtomicReference<>();
-    helpers.runInTransaction(
-      () -> {
-        userReference.set(
-          userDataManager
-            .findById(userReference.get().getId())
-            .orElseThrow(RuntimeException::new)
-        );
-        final List<Post> postsOfUser = testApi.invokeEndpoint(
-          "associatePostsWithUser",
-          userReference.get(),
-          new ArrayList<>(helpers.generatePosts(10, false))
-        );
-        final Post toRemove = postsOfUser
-          .stream()
-          .findAny()
-          .orElseThrow(RuntimeException::new);
-        final List<Post> removedPosts = testApi.invokeEndpoint(
-          "removePostsFromUser",
-          userReference.get(),
-          Collections.singletonList(toRemove)
-        );
-        removedPostsReference.set(removedPosts);
-        try {
-          Thread.sleep(2500);
-        } catch (InterruptedException ignored) {}
-      }
-    );
-    subscriber.assertNextEquals(removedPostsReference.get());
+    subscriber
+      .when(
+        () ->
+          helpers.runInTransaction(
+            () -> {
+              userReference.set(
+                userDataManager
+                  .findById(userReference.get().getId())
+                  .orElseThrow(RuntimeException::new)
+              );
+              final List<Post> postsOfUser = testApi.invokeEndpoint(
+                "associatePostsWithUser",
+                userReference.get(),
+                new ArrayList<>(helpers.generatePosts(10, false))
+              );
+              final Post toRemove = postsOfUser
+                .stream()
+                .findAny()
+                .orElseThrow(RuntimeException::new);
+              final List<Post> removedPosts = testApi.invokeEndpoint(
+                "removePostsFromUser",
+                userReference.get(),
+                Collections.singletonList(toRemove)
+              );
+              removedPostsReference.set(removedPosts);
+              try {
+                Thread.sleep(2500);
+              } catch (InterruptedException ignored) {}
+            }
+          )
+      )
+      .expect(removedPostsReference.get());
   }
 
   @SuppressWarnings("rawtypes")
-  private <T> TestSubscriber generateTestSubscriber(
+  private <T> TestSubscriberWhenMethod generateTestSubscriber(
     String methodName,
     Class targetType,
     T primaryInput
@@ -661,10 +630,7 @@ class UserGraphQLApiServiceTest {
   }
 
   @NotNull
-  private AtomicReference<List<Post>> associatePostsWithUser(
-    User user,
-    List<Post> input
-  ) {
+  private List<Post> associatePostsWithUser(User user, List<Post> input) {
     AtomicReference<List<Post>> toAssociate = new AtomicReference<>(input);
     helpers.runInTransaction(
       () -> {
@@ -680,7 +646,7 @@ class UserGraphQLApiServiceTest {
         );
       }
     );
-    return toAssociate;
+    return toAssociate.get();
   }
 
   @BeforeEach

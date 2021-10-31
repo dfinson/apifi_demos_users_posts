@@ -38,6 +38,10 @@ public class UserGraphQLApiService {
 
   @Autowired
   @Getter
+  private SubscriptionsLogicService<User> subscriptionsLogicService;
+
+  @Autowired
+  @Getter
   private DataManager<User> dataManager;
 
   @Autowired(required = false)
@@ -52,7 +56,8 @@ public class UserGraphQLApiService {
 
   @PostConstruct
   private void postConstructInit() {
-    apiLogic.init(dataManager, apiHooks);
+    subscriptionsLogicService.setApiHooks(apiHooks);
+    apiLogic.init(dataManager, apiHooks, subscriptionsLogicService);
   }
 
   @GraphQLQuery
@@ -227,18 +232,6 @@ public class UserGraphQLApiService {
   }
 
   @GraphQLMutation
-  public List<Post> updatePostsOfUser(User owner, List<Post> input) {
-    return apiLogic.updateEntityCollection(
-      owner,
-      postsDataManager,
-      input,
-      null,
-      "posts",
-      postsSubscriptionsLogicService
-    );
-  }
-
-  @GraphQLMutation
   public List<Post> removePostsFromUser(User owner, List<Post> input) {
     return apiLogic.removeFromEntityCollection(
       owner,
@@ -291,22 +284,8 @@ public class UserGraphQLApiService {
     return apiLogic.onAssociateWithSubscription(
       owner,
       "posts",
-      backPressureStrategy
-    );
-  }
-
-  @GraphQLSubscription
-  public Flux<List<Post>> onUpdatePostsOfUser(
-    User owner,
-    @GraphQLArgument(
-      name = "backPressureStrategy",
-      defaultValue = "\"BUFFER\""
-    ) FluxSink.OverflowStrategy backPressureStrategy
-  ) {
-    return apiLogic.onUpdateInSubscription(
-      owner,
-      "posts",
-      backPressureStrategy
+      backPressureStrategy,
+      postsDataManager
     );
   }
 
@@ -321,7 +300,8 @@ public class UserGraphQLApiService {
     return apiLogic.onRemoveFromSubscription(
       owner,
       "posts",
-      backPressureStrategy
+      backPressureStrategy,
+      postsDataManager
     );
   }
 }

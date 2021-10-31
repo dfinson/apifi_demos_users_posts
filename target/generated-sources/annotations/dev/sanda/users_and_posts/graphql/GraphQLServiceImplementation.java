@@ -23,13 +23,13 @@ import org.springframework.stereotype.Component;
 public class GraphQLServiceImplementation implements GraphQLInstanceFactory {
 
   @Autowired
-  private CommentGraphQLApiService commentGraphQLApiService;
-
-  @Autowired
   private PostGraphQLApiService postGraphQLApiService;
 
   @Autowired
   private UserGraphQLApiService userGraphQLApiService;
+
+  @Autowired
+  private CommentGraphQLApiService commentGraphQLApiService;
 
   @Autowired
   private CustomUserSubscriptionsService customUserSubscriptionsService;
@@ -47,16 +47,16 @@ public class GraphQLServiceImplementation implements GraphQLInstanceFactory {
   private void init() {
     val schema = new GraphQLSchemaGenerator()
       .withOperationsFromSingleton(
-        commentGraphQLApiService,
-        CommentGraphQLApiService.class
-      )
-      .withOperationsFromSingleton(
         postGraphQLApiService,
         PostGraphQLApiService.class
       )
       .withOperationsFromSingleton(
         userGraphQLApiService,
         UserGraphQLApiService.class
+      )
+      .withOperationsFromSingleton(
+        commentGraphQLApiService,
+        CommentGraphQLApiService.class
       )
       .withOperationsFromSingleton(
         customUserSubscriptionsService,
